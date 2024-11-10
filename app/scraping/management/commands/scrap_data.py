@@ -1,13 +1,12 @@
 from django.core.management.base import BaseCommand
 
-from scraping.models import ScrapedData, Product
+from scraping.models import ScrapedData, Product, SearchTerm
 
 from parsel import Selector
 from datetime import datetime
 from typing import TypedDict
 import cloudscraper
 import json
-import time
 
 
 class ScrapedDataDict(TypedDict):
@@ -36,12 +35,11 @@ class Command(BaseCommand):
             print("Nenhum produto cadastrado")
             return
 
-        for product in Product.objects.filter(deleted_at=None).iterator():
+        for search_term in SearchTerm.objects.filter(deleted_at=None):
     
             while True:
                 print(f"Página: {page}")
-                time.sleep(0.1)
-                product_name = product.name.replace(" ", "+")
+                product_name = search_term.term.replace(" ", "+")
                 r = scraper.get(f"https://www.olx.com.br/brasil?q={product_name}&opst=2&o={page}")
 
                 if "Ops! Nenhum anúncio foi encontrado." in r.text:
@@ -62,7 +60,7 @@ class Command(BaseCommand):
                         continue
                     
                     ScrapedData.objects.create(
-                        product_id=product.id,
+                        product_id=search_term.product.pk,
                         olx_id=list_id,
                         title=product_data.get('title'),
                         url=product_data.get('url'),

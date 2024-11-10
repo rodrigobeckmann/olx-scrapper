@@ -1,6 +1,11 @@
 from django.contrib import admin
-from .models import ScrapedData, Product
+from .models import ScrapedData, Product, SearchTerm
 
+class SearchTermInline(admin.TabularInline):  # Ou admin.StackedInline para um layout diferente
+    model = SearchTerm
+    extra = 1  # Número de linhas extras vazias para adicionar novas instâncias
+    fields = ('term',)
+    readonly_fields = ('created_at', 'updated_at')
 
 @admin.register(ScrapedData)
 class ScrapedDataAdmin(admin.ModelAdmin):
@@ -34,3 +39,4 @@ class ProductAdmin(admin.ModelAdmin):
         }),
     )
     readonly_fields = ('created_at', 'updated_at')
+    inlines = [SearchTermInline]
