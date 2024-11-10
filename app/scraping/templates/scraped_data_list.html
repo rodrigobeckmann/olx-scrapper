@@ -8,6 +8,7 @@
     <h1>Lista de Dados Scraped</h1>
     <form method="post" action="{% url 'archive_selected' %}">
         {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
         <table border="1">
             <thead>
                 <tr>
