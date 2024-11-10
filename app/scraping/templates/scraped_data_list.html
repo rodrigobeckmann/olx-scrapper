@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Dados Scraped</title>
+</head>
+<body>
+    <h1>Lista de Dados Scraped</h1>
+    <form method="post" action="{% url 'archive_selected' %}">
+        {% csrf_token %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Imagem</th>
+                    <th>Título</th>
+                    <th>Preço</th>
+                    <th>URL</th>
+                    <th>Selecionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in scraped_data %}
+                    <tr>
+                        <td>
+                            {% if item.img_url %}
+                                <img src="{{ item.img_url }}" alt="Imagem" width="100">
+                            {% else %}
+                                Sem imagem
+                            {% endif %}
+                        </td>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.price }}</td>
+                        <td><a href="{{ item.url }}" target="_blank">Link</a></td>
+                        <td><input type="checkbox" name="selected_items" value="{{ item.id }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Arquivar Selecionados</button>
+    </form>
+</body>
+</html>

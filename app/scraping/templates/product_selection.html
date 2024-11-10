@@ -1,0 +1,16 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seleção de Produto</title>
+</head>
+<body>
+    <h1>Selecione um Produto</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <a href="{% url 'scraped_data_list' product.id %}">{{ product.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
