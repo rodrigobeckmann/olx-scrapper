@@ -1,6 +1,11 @@
 from django.core.management.base import BaseCommand
 
-from scraping.models import ScrapedData, Product, SearchTerm
+from scraping.models import (
+    ScrapedData,
+    Product,
+    SearchTerm,
+    ScrapLog,
+)
 
 from parsel import Selector
 from datetime import datetime
@@ -27,6 +32,7 @@ class Command(BaseCommand):
         print("Executando rotina de scraping...")
 
         new_files = 0
+        page_count = 0
 
         scraper = cloudscraper.create_scraper()
         page = 1
@@ -69,7 +75,13 @@ class Command(BaseCommand):
                         listing_date=datetime.fromtimestamp(int(product_data.get('date'))),
                     )
                     new_files += 1
+                    page_count += 1
                 page += 1
+
+        ScrapLog.objects.create(
+            new_data_scraped=new_files,
+            pages_scraped=page_count
+        )
 
         print(f"{new_files} novos arquivos salvos no banco de dados")
 

@@ -38,3 +38,12 @@ class ScrapedData(models.Model):
 
     def __str__(self):
         return self.title
+
+class ScrapLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    new_data_scraped = models.IntegerField()
+    pages_scraped = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.message

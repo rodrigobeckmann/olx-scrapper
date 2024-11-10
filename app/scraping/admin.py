@@ -1,9 +1,14 @@
 from django.contrib import admin
-from .models import ScrapedData, Product, SearchTerm
+from .models import (
+    ScrapedData,
+    Product,
+    SearchTerm,
+    ScrapLog,
+)
 
-class SearchTermInline(admin.TabularInline):  # Ou admin.StackedInline para um layout diferente
+class SearchTermInline(admin.TabularInline):
     model = SearchTerm
-    extra = 1  # Número de linhas extras vazias para adicionar novas instâncias
+    extra = 1
     fields = ('term',)
     readonly_fields = ('created_at', 'updated_at')
 
@@ -40,3 +45,10 @@ class ProductAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created_at', 'updated_at')
     inlines = [SearchTermInline]
+
+@admin.register(ScrapLog)
+class ScrapLogAdmin(admin.ModelAdmin):
+    list_display = ('id', 'new_data_scraped', 'pages_scraped', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('id',)
+    ordering = ('-created_at',)
