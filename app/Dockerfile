@@ -1,6 +1,8 @@
 # Use uma imagem base do Python
 FROM python:3.10-slim
 
+RUN apt-get update && apt-get install -y cron
+
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
 

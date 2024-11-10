@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 from scraping.models import (
     ScrapedData,
@@ -29,7 +30,8 @@ class Command(BaseCommand):
     help = 'Executa a rotina de scraping'
 
     def handle(self, *args, **kwargs):
-        print("Executando rotina de scraping...")
+        print(f"Iniciada rotina de scraping {timezone.now()}")
+
 
         new_files = 0
         page_count = 0
@@ -39,6 +41,7 @@ class Command(BaseCommand):
 
         if not Product.objects.filter(deleted_at=None).exists():
             print("Nenhum produto cadastrado")
+            print(f"Rotina finalizada por falta de produtos {timezone.now()}")
             return
 
         for search_term in SearchTerm.objects.filter(deleted_at=None):
@@ -49,7 +52,7 @@ class Command(BaseCommand):
                 r = scraper.get(f"https://www.olx.com.br/brasil?q={product_name}&opst=2&o={page}")
 
                 if "Ops! Nenhum anúncio foi encontrado." in r.text:
-                    print("Página final alcançada")
+                    print(f"Rotina finalizada para o termo {search_term.term}")
                     break
 
                 response = Selector(text=r.text)
@@ -85,4 +88,4 @@ class Command(BaseCommand):
 
         print(f"{new_files} novos arquivos salvos no banco de dados")
 
-        print("Rotina concluída com sucesso!")
+        print(f"Finalizada rotina de scraping {timezone.now()}")
