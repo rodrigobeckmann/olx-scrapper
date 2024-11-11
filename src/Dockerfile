@@ -4,7 +4,7 @@ FROM python:3.10-slim
 RUN apt-get update && apt-get install -y cron
 
 # Define o diretório de trabalho dentro do container
-WORKDIR /app
+WORKDIR /src
 
 # Copie o arquivo de dependências
 COPY ../requirements.txt .

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'scraping',
+    'data_collection',
     'django_crontab',
 ]
 
@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'olxscraper.urls'
+ROOT_URLCONF = 'olx_scraper.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'olxscraper.wsgi.application'
+WSGI_APPLICATION = 'olx_scraper.wsgi.application'
 
 
 # Database
@@ -82,7 +82,7 @@ DATABASES = {
         'USER': 'myuser',
         'PASSWORD': 'mypassword',
         'HOST': 'db',
-        'PORT': '5432',
+        'PORT': '7001',
     }
 }
 
@@ -129,5 +129,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
-    ('*/30 * * * *', 'django.core.management.call_command', ['scrap_data'], {}, '>> /app/logs/scrap_data.log 2>&1'),
+    ('*/30 * * * *', 'django.core.management.call_command', ['scrap_data'], {}, '>> /src/logs/scrap_data.log 2>&1'),
 ]

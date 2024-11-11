@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from scraping.models import (
+from data_collection.models import (
     ScrapedData,
     Product,
     SearchTerm,
@@ -37,7 +37,6 @@ class Command(BaseCommand):
         page_count = 0
 
         scraper = cloudscraper.create_scraper()
-        page = 1
 
         if not Product.objects.filter(deleted_at=None).exists():
             print("Nenhum produto cadastrado")
@@ -45,6 +44,7 @@ class Command(BaseCommand):
             return
 
         for search_term in SearchTerm.objects.filter(deleted_at=None):
+            page = 1
     
             while True:
                 print(f"Página: {page}")
@@ -78,7 +78,8 @@ class Command(BaseCommand):
                         listing_date=datetime.fromtimestamp(int(product_data.get('date'))),
                     )
                     new_files += 1
-                    page_count += 1
+                
+                page_count += 1
                 page += 1
 
         ScrapLog.objects.create(

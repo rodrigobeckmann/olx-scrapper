@@ -3,13 +3,13 @@ version: '3.8'
 services:
   web:
     build:
-      context: ./app
+      context: ./src
     container_name: django_app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:7000
     volumes:
-      - ./app:/app
+      - ./src:/src
     ports:
-      - "8000:8000"
+      - "7000:7000"
     depends_on:
       - db
 
@@ -21,9 +21,10 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     ports:
-      - "5432:5432"
+      - "7001:7001"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    command: -p 7001
 
 volumes:
   postgres_data:
