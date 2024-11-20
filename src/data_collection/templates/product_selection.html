@@ -9,6 +9,7 @@
         {% for product in products %}
             <li>
                 <a href="{% url 'scraped_data_list' product.id %}">{{ product.name }}</a>
+                {{product.scraped_data_count}} novos registros
             </li>
         {% endfor %}
     </ul>

@@ -1,10 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q, Count
 from .models import ScrapedData, Product
 from django.contrib.auth.decorators import login_required
 
 @login_required
 def product_selection(request):
-    products = Product.objects.all()
+    products = (
+        Product.objects
+        .filter(deleted_at__isnull=True)
+        .annotate(
+            scraped_data_count=Count('scrapeddata', filter=Q(scrapeddata__archived=False))
+        )
+    )
     return render(request, 'product_selection.html', {'products': products})
 
 @login_required
